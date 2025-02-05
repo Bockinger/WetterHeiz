@@ -32,3 +32,9 @@ header {
   background: linear-gradient(to bottom, lightblue, white);
   color: wi
 }
+
+.section_Card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 10px;
+}

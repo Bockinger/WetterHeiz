@@ -1,0 +1,43 @@
+.card {
+  height: 500px;
+  width: 320px;
+  border-radius: 8px;
+  margin: 20px;
+  background-color: rgb(222, 230, 222);
+}
+
+.card_Header {
+  display: flex;
+  background-color: aquamarine;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px, 8px;
+}
+
+.card_Header p1 {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.card_Header p2 {
+  margin: 10px;
+
+}
+
+table {
+  margin-top: 20px;
+}
+
+
+
+td {
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 70%;
+
+}
+
+td img {
+  width: 24px;
+  height: 24px;
+}
