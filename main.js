@@ -2,7 +2,7 @@ let arrayWeatherDay = [];
 
 
 const APIPfadDay = "https://api.open-meteo.com/v1/forecast?latitude=47.6409&longitude=11.7448&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,pressure_msl,cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_speed_10m,uv_index&forecast_days=1";
-const APIPfadForecast = "https://api.open-meteo.com/v1/forecast?latitude=47.6409&longitude=11.7448&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,pressure_msl,cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_speed_10m,uv_index&forecast_days=3"
+const APIPfadForecast = "https://api.open-meteo.com/v1/forecast?latitude=47.6409&longitude=11.7448&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,pressure_msl,cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_speed_10m,uv_index&forecast_days=2"
 
 function init() {
   console.log("Card schreiben")
@@ -18,36 +18,27 @@ async function readAPIDataDay() {
     let data = await Promise.all([response1, response2]);
     let data1 = await data[0].json();
     let data2 = await data[1].json();
-    await dataRead(data1);
+    await dataRead(data1, "aktuell");
+    await dataRead(data2, "morgen");
+
   } catch {
     console.error("Keine Daten");
   }
 }
 
 
-function KeysRead(data, i) {
-  let eintrag = Object.keys(data.hourly)[i];
-
-  return eintrag;
-}
-
-
-async function dataRead(data) {
-  KeysRead(data, 1);
-  let indexTime = indexTimeHourly(data);
+async function dataRead(data, day) {
+  let indexTime = indexTimeHourly(data, day);
   let indexHourly = indexSerach(data);
   for (let i = 0; i < indexHourly; i++) {
     let entry = data.hourly[KeysRead(data, i)][indexTime];
-    console.log("Eintragentzry ", entry);
+    arrayWeatherDay.push(entry);
   }
-
-  console.log("indexTime ", indexTime);
-  console.log("indexHourly ", indexHourly);
-  RenderCard(0, data);
+  RenderCard(day);
 }
 
 
-function indexTimeHourly(data) {
+function indexTimeHourly(data, day) {
   let timeLenght = Object.keys(data.hourly.time).length;
   for (let i = 0; i <= timeLenght; i++) {
     if ((data.hourly.time[i]).includes(getTime())) {
@@ -62,32 +53,36 @@ function indexSerach(data) {
 }
 
 
-
-
-
 function getTime() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, '0');
   return `${hours}:00`;
 }
 
-function RenderCard(art, array) {
-  if (art == 0) {
-    formatDate(array)
-    document.getElementById('sectionCard').innerHTML += templateCardCurrent(array);
+
+function KeysRead(data, i) {
+  let eintrag = Object.keys(data.hourly)[i];
+  return eintrag;
+}
+
+
+function RenderCard(day) {
+  if (day == "aktuell") {
+    document.getElementById('sectionCard').innerHTML += templateCardCurrent(day);
   } else {
-    document.getElementById('sectionCard').innerHTML += templateCardForecast(array);
+    document.getElementById('sectionCard').innerHTML += templateCardCurrent(day);
   }
 }
 
 
 
-function formatDate(array) {
-  let data = array.hourly.time[1];
 
-  for (i = 0; i > 10; i++) {
-    console.log("Nummer ", i)
-  }
-  console.log(data)
-
+function formatData(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}.${month}.${year} ${hours}:${minutes} Uhr`;
 }
