@@ -25,25 +25,26 @@ async function readAPIDataDay() {
 }
 
 
+function KeysRead(data, i) {
+  let eintrag = Object.keys(data.hourly)[i];
+
+  return eintrag;
+}
+
+
 async function dataRead(data) {
+  KeysRead(data, 1);
   let indexTime = indexTimeHourly(data);
   let indexHourly = indexSerach(data);
-
-
-  for (let i = 0; i > indexSerach; i++) {
-    let entry = data.hourly[i][indexTime];
-    console.log("Eintrag ", entry);
+  for (let i = 0; i < indexHourly; i++) {
+    let entry = data.hourly[KeysRead(data, i)][indexTime];
+    console.log("Eintragentzry ", entry);
   }
-
-
 
   console.log("indexTime ", indexTime);
   console.log("indexHourly ", indexHourly);
-
   RenderCard(0, data);
-
 }
-
 
 
 function indexTimeHourly(data) {
@@ -61,14 +62,14 @@ function indexSerach(data) {
 }
 
 
+
+
+
 function getTime() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, '0');
   return `${hours}:00`;
 }
-
-
-
 
 function RenderCard(art, array) {
   if (art == 0) {
@@ -87,7 +88,6 @@ function formatDate(array) {
   for (i = 0; i > 10; i++) {
     console.log("Nummer ", i)
   }
-
   console.log(data)
 
 }
