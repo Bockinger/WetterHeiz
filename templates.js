@@ -1,4 +1,4 @@
-function templateCardCurrent() {
+function templateCardCurrent(data) {
   return `
    <div id="card" class="card">
       <div class="card_Header">
