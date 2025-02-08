@@ -26,6 +26,7 @@ async function readAPIDataDay() {
 
 
 async function dataRead(data, day) {
+  arrayWeatherDay = [];
   let indexTime = indexTimeHourly(data, day);
   let indexHourly = indexSerach(data);
   for (let i = 0; i < indexHourly; i++) {
@@ -36,10 +37,23 @@ async function dataRead(data, day) {
 }
 
 
+
 function indexTimeHourly(data, day) {
   let timeLenght = Object.keys(data.hourly.time).length;
-  for (let i = 0; i <= timeLenght; i++) {
+  console.log("TimeLänge ", timeLenght);
+  let start = 0;
+  if (day == "morgen") {
+    console.log("Morgen ");
+    start = 24;
+  } else {
+    console.log("Heute");
+    start = 0
+  }
+
+
+  for (let i = start; i <= timeLenght; i++) {
     if ((data.hourly.time[i]).includes(getTime())) {
+      console.log(i);
       return i;
     }
   }
