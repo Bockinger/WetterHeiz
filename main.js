@@ -9,17 +9,15 @@ function init() {
   readAPIDataDay();
 }
 
-
 async function readAPIDataDay() {
   console.log("Start abfrage");
   try {
-    response1 = fetch(APIPfadDay);
-    response2 = fetch(APIPfadForecast);
-    let data = await Promise.all([response1, response2]);
+
+    response = fetch(APIPfadForecast);
+    let data = await Promise.all([response]);
     let data1 = await data[0].json();
-    let data2 = await data[1].json();
     await dataRead(data1, "aktuell");
-    await dataRead(data2, "morgen");
+    await dataRead(data1, "morgen");
 
   } catch {
     console.error("Keine Daten");
