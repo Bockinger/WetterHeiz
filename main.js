@@ -7,6 +7,7 @@ const APIPfadForecast = "https://api.open-meteo.com/v1/forecast?latitude=47.6409
 function init() {
   console.log("Card schreiben")
   readAPIDataDay();
+  setInterval(readAPIDataDay, 20 * 60 * 1000);
 }
 
 async function readAPIDataDay() {
@@ -16,6 +17,7 @@ async function readAPIDataDay() {
     response = fetch(APIPfadForecast);
     let data = await Promise.all([response]);
     let data1 = await data[0].json();
+    document.getElementById('sectionCard').innerHTML = "";
     await dataRead(data1, "aktuell");
     await dataRead(data1, "morgen");
 
@@ -33,6 +35,7 @@ async function dataRead(data, day) {
     let entry = data.hourly[KeysRead(data, i)][indexTime];
     arrayWeatherDay.push(entry);
   }
+
   RenderCard(day);
 }
 
@@ -75,11 +78,14 @@ function KeysRead(data, i) {
 
 
 function RenderCard(day) {
+
   if (day == "aktuell") {
     document.getElementById('sectionCard').innerHTML += templateCardCurrent(day);
   } else {
     document.getElementById('sectionCard').innerHTML += templateCardCurrent(day);
   }
+
+
 }
 
 
