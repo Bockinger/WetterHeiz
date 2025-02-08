@@ -45,11 +45,7 @@ function indexTimeHourly(data, day) {
   if (day == "morgen") {
     console.log("Morgen ");
     start = 24;
-  } else {
-    console.log("Heute");
-    start = 0
   }
-
 
   for (let i = start; i <= timeLenght; i++) {
     if ((data.hourly.time[i]).includes(getTime())) {
