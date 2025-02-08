@@ -8,6 +8,7 @@ function init() {
   console.log("Card schreiben")
   readAPIDataDay();
   setInterval(readAPIDataDay, 20 * 60 * 1000);
+  readDataSenec();
 }
 
 async function readAPIDataDay() {
