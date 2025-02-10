@@ -1,11 +1,13 @@
-function templateCardCurrent(name) {
+function templateCardCurrent(name, index) {
   return `
-   <div id="card" class="card">
+   <div id="card${index}" class="card">
       <div class="card_Header">
         <p1>${name}</p1>
-        <p2>${formatData(arrayWeatherDay[0])}</p2>
+        <p2 class="card_time" >${formatData(arrayWeatherDay[0])}</p2>
+        <img id="cardPic${index}" onclick="cardShrink(${index})" src="./assets/icons/close.svg">
       </div>
-      <div id="cardDetail" class="card_Detail">
+
+      <div id="cardDetail${index}" class="card_Detail">
         <table>
           <tr>
             <td>Temperatur</td>
@@ -82,6 +84,51 @@ function templateCardCurrent(name) {
                   <td>${arrayWeatherDay[14]} km/h</td>
             <td>
               <img src="./assets/icons/air.svg">
+            </td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+  `
+}
+
+
+
+
+function templateCardSenec(name, index) {
+  return `
+
+   <div id="card${index}" class="card">
+      <div class="card_Header">
+        <p1>${name}</p1>
+        <p2 class="card_time" >${formatData(arrayWeatherDay[0])}</p2>
+        <img id="cardPic${index}" onclick="cardShrink(${index})" src="./assets/icons/close.svg">
+      </div>
+
+      <div id="cardDetail${index}" class="card_Detail">
+        <table>
+          <tr>
+            <td>Hausverbrauch</td>
+            <td>${arraySenecData[0]} KW</td>
+            <td>
+              <img src="./assets/icons/temp.svg">
+            </td>
+          </tr>
+
+          <tr>
+            <td>Einspeisung</td>
+            <td>${arraySenecData[1]} KW</td>
+            <td>
+              <img src="./assets/icons/temp.svg">
+            </td>
+          </tr>
+
+          <tr>
+            <td>PV Produktion</td>
+            <td>${arraySenecData[2]} KW</td>
+            <td>
+              <img src="./assets/icons/temp.svg">
             </td>
           </tr>
 

@@ -16,18 +16,13 @@ async function readDataSenec() {
     if (!response.ok) {
       throw new Error(`Fehler beim Abrufen der Daten: ${response.statusText}`);
     }
-
     const data = await response.json();
     console.log("senec-daten ", data);
-
-    let data1 = data["ENERGY"]["GUI_HOUSE_POW"];
-
-    console.log("Data1", data1);
-
-    console.log("Daten ", convertFlToDecimal(data1));
-
-    //console.log()
-
+    let data1 = hexFloatToDecimal(data["ENERGY"]["GUI_HOUSE_POW"]);
+    let data2 = hexFloatToDecimal(data["ENERGY"]["GUI_GRID_POW"]);
+    let data3 = hexFloatToDecimal(data["ENERGY"]["GUI_INVERTER_POWER"]);
+    arraySenecData = [data1, data2, data3];
+    document.getElementById('sectionCard').innerHTML += templateCardSenec("SENEC", 3);
   } catch (error) {
     console.log("Fehler:", error);
   }
@@ -35,19 +30,22 @@ async function readDataSenec() {
 }
 
 
-function convertFlToDecimal(flString) {
-  // Prüfen, ob das Präfix "fl_" vorhanden ist
-  if (!flString.startsWith("fl_")) {
-    console.error("Ungültiges Format! Erwartet wird ein String mit 'fl_'.");
-    return null;
-  }
-  // Präfix entfernen, um die Hexadezimalzahl zu erhalten
-  const hexValue = flString.replace("fl_", "");
-  // Hexadezimal in Dezimal umwandeln
-  let decimalValue = parseInt(hexValue, 16);
-  // Falls der Wert eine 32-Bit signed Integer-Zahl ist, umwandeln
-  if (decimalValue > 0x7FFFFFFF) {
-    decimalValue = decimalValue - 0x100000000; // 2er-Komplement für negative Werte
-  }
-  return decimalValue;
+function hexFloatToDecimal(hexString) {
+  // Präfix "fl_" entfernen, falls vorhanden
+  hexString = hexString.replace("fl_", "");
+
+  // Hexadezimal in eine Ganzzahl umwandeln
+  let intVal = parseInt(hexString, 16);
+
+  // ArrayBuffer für IEEE 754 Umwandlung (32-bit Float)
+  let buffer = new ArrayBuffer(4);
+  let intView = new DataView(buffer);
+
+  // Setze den 32-bit Integer-Wert
+  intView.setUint32(0, intVal, false); // false = Big-Endian
+
+  // Als 32-bit Float lesen
+  //return intView.getFloat32(0, false);
+
+  return (intView.getFloat32(0, false) / 1000).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }

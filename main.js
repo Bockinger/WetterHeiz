@@ -1,4 +1,5 @@
 let arrayWeatherDay = [];
+let arraySenecData = [];
 
 
 const APIPfadDay = "https://api.open-meteo.com/v1/forecast?latitude=47.6409&longitude=11.7448&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,pressure_msl,cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_speed_10m,uv_index&forecast_days=1";
@@ -18,9 +19,9 @@ async function readAPIDataDay() {
     response = fetch(APIPfadForecast);
     let data = await Promise.all([response]);
     let data1 = await data[0].json();
-    document.getElementById('sectionCard').innerHTML = "";
-    await dataRead(data1, "aktuell");
-    await dataRead(data1, "morgen");
+    //document.getElementById('sectionCard').innerHTML = "";
+    await dataRead(data1, "aktuell", 1);
+    await dataRead(data1, "morgen", 2);
 
   } catch {
     console.error("Keine Daten");
@@ -28,7 +29,7 @@ async function readAPIDataDay() {
 }
 
 
-async function dataRead(data, day) {
+async function dataRead(data, day, index) {
   arrayWeatherDay = [];
   let indexTime = indexTimeHourly(data, day);
   let indexHourly = indexSerach(data);
@@ -36,8 +37,7 @@ async function dataRead(data, day) {
     let entry = data.hourly[KeysRead(data, i)][indexTime];
     arrayWeatherDay.push(entry);
   }
-
-  RenderCard(day);
+  RenderCard(day, index);
 }
 
 
@@ -78,18 +78,15 @@ function KeysRead(data, i) {
 }
 
 
-function RenderCard(day) {
-
+function RenderCard(day, index) {
   if (day == "aktuell") {
-    document.getElementById('sectionCard').innerHTML += templateCardCurrent(day);
+    document.getElementById('sectionCard').innerHTML += templateCardCurrent(day, index);
   } else {
-    document.getElementById('sectionCard').innerHTML += templateCardCurrent(day);
+    document.getElementById('sectionCard').innerHTML += templateCardCurrent(day, index);
   }
 
 
 }
-
-
 
 
 function formatData(dateString) {
@@ -100,4 +97,19 @@ function formatData(dateString) {
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${day}.${month}.${year} ${hours}:${minutes} Uhr`;
+}
+
+
+
+
+function cardShrink(index) {
+  let element = document.getElementById('cardDetail' + index);
+  let elementPic = document.getElementById('cardPic' + index);
+  if (elementPic.src.includes("close.svg")) {
+    elementPic.src = "./assets/icons/open.svg";
+  } else {
+    elementPic.src = "./assets/icons/close.svg";
+  }
+  element.hidden = !element.hidden;
+  document.getElementById('card' + index).classList.toggle('card_Shrink');
 }
