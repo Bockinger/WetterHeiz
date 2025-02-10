@@ -59,5 +59,8 @@ td img {
 
 
 .card_Shrink {
-  height: 0px !important;
+  height: 50px !important;
+  background-color: white;
+  padding-top: 10px;
+
 }
