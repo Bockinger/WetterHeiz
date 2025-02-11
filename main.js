@@ -10,6 +10,7 @@ function init() {
   readAPIDataDay();
   setInterval(readAPIDataDay, 20 * 60 * 1000);
   readDataSenec();
+  spinningLoader(false);
 }
 
 async function readAPIDataDay() {
@@ -38,6 +39,7 @@ async function dataRead(data, day, index) {
     arrayWeatherDay.push(entry);
   }
   RenderCard(day, index);
+
 }
 
 
@@ -112,4 +114,30 @@ function cardShrink(index) {
   }
   element.hidden = !element.hidden;
   document.getElementById('card' + index).classList.toggle('card_Shrink');
+}
+
+
+
+
+function spinningLoader(state) {
+  let element = document.getElementById('loader');
+  if (state) {
+    element.classList.toggle("hidden");
+  } else {
+    element.classList.toggle("hidden");
+  }
+}
+
+
+
+
+function colorAdd(IDName) {
+  let element = document.getElementById(IDName);
+
+  element.classList.toggle('colorAdd')
+
+
+
+
+
 }

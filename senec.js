@@ -3,14 +3,14 @@ const senecIp = "https://192.168.0.151/lala.cgi"
 console.log("SENEC");
 
 async function readDataSenec() {
-  console.log("Starte Senec Anfrage");
+  spinningLoader(true);
 
+  console.log("Starte Senec Anfrage");
   try {
     let response = await fetch(senecIp, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: JSON.stringify({ "ENERGY": {} })
-
     });
 
     if (!response.ok) {
@@ -23,10 +23,11 @@ async function readDataSenec() {
     let data3 = hexFloatToDecimal(data["ENERGY"]["GUI_INVERTER_POWER"]);
     arraySenecData = [data1, data2, data3];
     document.getElementById('sectionCard').innerHTML += templateCardSenec("SENEC", 3);
+    spinningLoader(false);
   } catch (error) {
     console.log("Fehler:", error);
+    spinningLoader(false);
   }
-
 }
 
 
