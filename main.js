@@ -8,22 +8,27 @@ const APIPfadForecast = "https://api.open-meteo.com/v1/forecast?latitude=47.6409
 function init() {
   console.log("Card schreiben")
   readAPIDataDay();
-  setInterval(readAPIDataDay, 20 * 60 * 1000);
   readDataSenec();
   spinningLoader(false);
 }
 
+
+
+function dataRead() {
+  //document.getElementById('sectionCard').innerHTML = "";
+}
+
+
+
 async function readAPIDataDay() {
   console.log("Start abfrage");
   try {
-
     response = fetch(APIPfadForecast);
     let data = await Promise.all([response]);
     let data1 = await data[0].json();
-    //document.getElementById('sectionCard').innerHTML = "";
+    document.getElementById('sectionCard').innerHTML = "";
     await dataRead(data1, "aktuell", 1);
     await dataRead(data1, "morgen", 2);
-
   } catch {
     console.error("Keine Daten");
   }
@@ -39,9 +44,7 @@ async function dataRead(data, day, index) {
     arrayWeatherDay.push(entry);
   }
   RenderCard(day, index);
-
 }
-
 
 
 function indexTimeHourly(data, day) {
@@ -52,7 +55,6 @@ function indexTimeHourly(data, day) {
     console.log("Morgen ");
     start = 24;
   }
-
   for (let i = start; i <= timeLenght; i++) {
     if ((data.hourly.time[i]).includes(getTime())) {
       console.log(i);
@@ -86,8 +88,6 @@ function RenderCard(day, index) {
   } else {
     document.getElementById('sectionCard').innerHTML += templateCardCurrent(day, index);
   }
-
-
 }
 
 
@@ -133,11 +133,5 @@ function spinningLoader(state) {
 
 function colorAdd(IDName) {
   let element = document.getElementById(IDName);
-
   element.classList.toggle('colorAdd')
-
-
-
-
-
 }

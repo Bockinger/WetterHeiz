@@ -2,9 +2,10 @@ const senecIp = "https://192.168.0.151/lala.cgi"
 
 console.log("SENEC");
 
+
+
 async function readDataSenec() {
   spinningLoader(true);
-
   console.log("Starte Senec Anfrage");
   try {
     let response = await fetch(senecIp, {
